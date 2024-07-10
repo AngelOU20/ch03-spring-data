@@ -1,40 +1,45 @@
 package edu.cibertec.capitulo03.service;
 
-import edu.cibertec.capitulo03.dao.UsuarioDAO;
-import edu.cibertec.capitulo03.model.UsuarioDTO;
+import edu.cibertec.capitulo03.dao.IUsuarioDAO;
+import edu.cibertec.capitulo03.model.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
-    private UsuarioDAO usuarioDAO;
+    private IUsuarioDAO usuarioDAO;
 
     @Override
-    public UsuarioDTO validarLogin(UsuarioDTO usuario) {
-        return usuarioDAO.validarLogin(usuario);
+    public UsuarioEntity validarLogin(UsuarioEntity usuario) {
+        Optional<UsuarioEntity> rpta = usuarioDAO.findByUsuario(usuario.getUsuario());
+        if (!rpta.isPresent() || !rpta.get().getClave().equals(usuario.getClave())) {
+            return null;
+        }
+        return rpta.get();
     }
 
     @Override
-    public void insertarUsuario(UsuarioDTO usuario) {
-        usuarioDAO.insertarUsuario(usuario);
+    public void insertarUsuario(UsuarioEntity usuario) {
+        usuarioDAO.save(usuario);
     }
 
     @Override
-    public List<UsuarioDTO> listarUsuarios() {
-        return usuarioDAO.listarUsuarios();
+    public List<UsuarioEntity> listarUsuarios() {
+        return usuarioDAO.findAll();
     }
 
     @Override
-    public void eliminarUsuario(UsuarioDTO usuario) {
-        usuarioDAO.eliminarUsuario(usuario);
+    public void eliminarUsuario(UsuarioEntity usuario) {
+        usuarioDAO.delete(usuario);
     }
 
     @Override
-    public UsuarioDTO obtenerUsuario(int id) {
-        return usuarioDAO.obtenerUsuario(id);
+    public Optional<UsuarioEntity> obtenerUsuario(int id) {
+        return usuarioDAO.findById(id);
     }
 }
