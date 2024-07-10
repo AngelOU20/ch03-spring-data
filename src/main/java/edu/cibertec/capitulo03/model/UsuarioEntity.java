@@ -2,10 +2,16 @@ package edu.cibertec.capitulo03.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UsuarioDTO {
+@Entity
+@Table(name = "usuario")
+public class UsuarioEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @Size(min = 3, max = 20)
@@ -13,16 +19,20 @@ public class UsuarioDTO {
 
     @NotNull
     @NotBlank
+    @Column(nullable = false)
     private String clave;
+
+    @Column(name = "nomCompleto")
     private String nombreCompleto;
 
+    @Transient
     private byte[] foto;
 
-    public UsuarioDTO() {
+    public UsuarioEntity() {
     }
 
-    public UsuarioDTO(int id, String usuario, String clave,
-                      String nombreCompleto) {
+    public UsuarioEntity(int id, String usuario, String clave,
+                         String nombreCompleto) {
         this.id = id;
         this.usuario = usuario;
         this.clave = clave;
@@ -68,4 +78,16 @@ public class UsuarioDTO {
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("UsuarioEntity{usuario=").append(usuario);
+        sb.append(", clave=").append(clave);
+        sb.append(", nombreCompleto=").append(nombreCompleto);
+        sb.append('}');
+        return sb.toString();
+    }
+
+
 }
