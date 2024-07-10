@@ -1,4 +1,4 @@
-<%@page import="edu.cibertec.capitulo03.model.UsuarioDTO"%>
+<%@page import="edu.cibertec.capitulo03.model.UsuarioEntity"%>
 <%@page import="java.util.List"%>
 <%@ page import="java.util.Base64" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -78,7 +78,7 @@
             Usuarios creados en esta sesión: ${sessionScope.contador}
         </p>
     </div>
-    <% List<UsuarioDTO> lista = (List<UsuarioDTO>) request.getAttribute("lista"); %>
+    <% List<UsuarioEntity> lista = (List<UsuarioEntity>) request.getAttribute("lista"); %>
     <div class="container table-container mt-5">
         <table class="table table-hover">
             <thead>
@@ -94,7 +94,7 @@
             </thead>
             <tbody>
             <% int c = 1; %>
-            <% for (UsuarioDTO usuario : lista) { %>
+            <% for (UsuarioEntity usuario : lista) { %>
             <tr>
                 <td><%= c++ %></td>
                 <td>

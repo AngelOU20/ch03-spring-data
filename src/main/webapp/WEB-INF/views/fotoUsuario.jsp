@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.Base64" %>
-<%@ page import="edu.cibertec.capitulo03.model.UsuarioDTO" %>
+<%@ page import="edu.cibertec.capitulo03.model.UsuarioEntity" %>
 
 <html>
 <head>
@@ -62,17 +62,17 @@
 
 <section class="container d-flex flex-column justify-content-center mt-5">
     <h1 class="text-center mb-4">Foto de <%=
-    ((UsuarioDTO) request.getAttribute("usuario")).getNombreCompleto()%></h1>
+    ((UsuarioEntity) request.getAttribute("usuario")).getNombreCompleto()%></h1>
 
     <% if (request.getAttribute("usuario") == null ||
-            ((UsuarioDTO) request.getAttribute("usuario")).getFoto() == null) {%>
+            ((UsuarioEntity) request.getAttribute("usuario")).getFoto() == null) {%>
 
     <h2 class="h3 text-center">Usuario sin FOTO!!</h2>
 
     <% } else { %>
 
         <img src="<%= "data:image/jpeg;base64," + Base64.getEncoder()
-        .encodeToString(((UsuarioDTO) request.getAttribute("usuario")).getFoto())  %>"
+        .encodeToString(((UsuarioEntity) request.getAttribute("usuario")).getFoto())  %>"
              alt="foto usuario" class="rounded mx-auto d-block img-fluid" style="width: 18rem;">
 
     <% } %>
@@ -85,7 +85,7 @@
         </div>
 
         <input type="hidden" name="idUsuario"
-               value="<%=(((UsuarioDTO) request.getAttribute("usuario")).getId())%>">
+               value="<%=(((UsuarioEntity) request.getAttribute("usuario")).getId())%>">
 
         <div class="d-flex align-items-center justify-content-between">
             <button type="submit" class="btn btn-primary">
