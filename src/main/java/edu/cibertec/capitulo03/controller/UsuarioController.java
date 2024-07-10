@@ -1,6 +1,6 @@
 package edu.cibertec.capitulo03.controller;
 
-import edu.cibertec.capitulo03.model.UsuarioDTO;
+import edu.cibertec.capitulo03.model.UsuarioEntity;
 import edu.cibertec.capitulo03.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @SessionAttributes("contador")
@@ -31,10 +32,10 @@ public class UsuarioController {
     }
 
     @RequestMapping("loginAccion")
-    public ModelAndView loginAccion(UsuarioDTO usuarioValida) {
+    public ModelAndView loginAccion(UsuarioEntity usuarioValida) {
         ModelAndView mv = null;
 
-        UsuarioDTO ue = usuarioService.validarLogin(usuarioValida);
+        UsuarioEntity ue = usuarioService.validarLogin(usuarioValida);
 
         if (ue == null) {
             mv = new ModelAndView("login", "msgError", "Usuario y clave no existen. Vuelva a intentar!");
@@ -48,19 +49,19 @@ public class UsuarioController {
 
     @RequestMapping("listaUsuarios")
     public ModelAndView listaUsuarios() {
-        List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
+        List<UsuarioEntity> usuarios = usuarioService.listarUsuarios();
         return new ModelAndView("usuarioLista", "lista", usuarios);
     }
 
     @RequestMapping("usuarioCrear")
     public ModelAndView crearUsuario() {
         return new ModelAndView("usuarioDatos", "usuarioBean",
-                new UsuarioDTO());
+                new UsuarioEntity());
     }
 
     @RequestMapping("usuarioGrabar")
     public ModelAndView grabarUsuario(
-            @Valid @ModelAttribute("usuarioBean") UsuarioDTO usuario,
+            @Valid @ModelAttribute("usuarioBean") UsuarioEntity usuario,
             BindingResult resulta, ModelMap modelo) {
 
         ModelAndView mv = null;
@@ -82,7 +83,7 @@ public class UsuarioController {
 
     @RequestMapping("usuarioEliminar")
     public ModelAndView eliminarUsuario(@RequestParam("id") int id) {
-        UsuarioDTO usuario = new UsuarioDTO();
+        UsuarioEntity usuario = new UsuarioEntity();
         usuario.setId(id);
         usuarioService.eliminarUsuario(usuario);
 
@@ -101,8 +102,8 @@ public class UsuarioController {
     @RequestMapping("registrarFoto")
     public ModelAndView registrarFoto(@RequestParam("archivo") CommonsMultipartFile archivo,
                                       @RequestParam("idUsuario") int id) {
-        UsuarioDTO usuario = usuarioService.obtenerUsuario(id);
-        usuario.setFoto(archivo.getBytes());
+        Optional<UsuarioEntity> usuario = usuarioService.obtenerUsuario(id);
+        usuario.get().setFoto(archivo.getBytes());
         return new ModelAndView("usuarioLista", "lista",
                 usuarioService.listarUsuarios());
     }
