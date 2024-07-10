@@ -1,13 +1,10 @@
 package edu.cibertec.capitulo03.dao;
 
-import edu.cibertec.capitulo03.model.UsuarioDTO;
+import edu.cibertec.capitulo03.model.UsuarioEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface IUsuarioDAO {
-    void insertarUsuario(UsuarioDTO usuario);
-    List<UsuarioDTO> listarUsuarios();
-    UsuarioDTO validarLogin(UsuarioDTO usuario);
-    void eliminarUsuario(UsuarioDTO usuario);
-    UsuarioDTO obtenerUsuario(int id);
+public interface IUsuarioDAO extends JpaRepository<UsuarioEntity, Integer> {
+    Optional<UsuarioEntity> findByUsuario(String usuario);
 }
